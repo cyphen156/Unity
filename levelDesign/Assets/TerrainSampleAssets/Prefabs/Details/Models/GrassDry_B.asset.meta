@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 43a3d20eab9d8f941a9f4b7660daafbb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4300000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 213197
+  packageName: Unity Terrain - URP Demo Scene
+  packageVersion: 1.0.2
+  assetPath: Assets/TerrainSampleAssets/Prefabs/Details/Models/GrassDry_B.asset
+  uploadId: 531585
