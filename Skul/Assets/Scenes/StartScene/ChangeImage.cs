@@ -11,12 +11,13 @@ public class ChangeImage : MonoBehaviour
     private int randomValue;
     private Vector3 cameraPosition;
     private float deltaTime;
-    private float clickTime;
+    private float restrictTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // default Position Value (0, 0, 0)
-        clickTime = 10;
+        restrictTime = 10;
     }
 
     // 씬 재활성시 마다 호출
@@ -45,7 +46,7 @@ public class ChangeImage : MonoBehaviour
         deltaTime += Time.deltaTime;
 
         // 씬을 로딩한 후 설정한 시간을 넘겼을 경우
-        if (Time.deltaTime > clickTime)
+        if (Time.deltaTime > restrictTime)
         {
             // 아무 키 입력시 씬을 전환함
             if (Input.anyKeyDown)
