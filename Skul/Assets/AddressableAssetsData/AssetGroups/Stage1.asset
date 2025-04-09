@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Stage1
+  m_EditorClassIdentifier: 
+  m_GroupName: Stage1
+  m_GUID: 1cedba17e676b3340bb996997d685f84
+  m_SerializeEntries:
+  - m_GUID: 0297c3ed4f9d8c4418eb2441e633052b
+    m_Address: Assets/Test/Triangle.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5847893ecaea28746b55aab555153fd2
+    m_Address: Assets/Scenes/Stage1.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage1Scene
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3a3614d0c8d72614e99a45359fe8c13f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 720f32d413a657f41978fc31f0fe51fd, type: 2}
+    - {fileID: 11400000, guid: 5ad1e11eecb76d8418664a9e50640c73, type: 2}

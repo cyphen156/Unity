@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: fe4c494b466a1bf4f90f9b41aa09a21b
-  m_SerializeEntries:
-  - m_GUID: 5847893ecaea28746b55aab555153fd2
-    m_Address: Assets/Scenes/Stage1.unity
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3a3614d0c8d72614e99a45359fe8c13f, type: 2}
   m_SchemaSet:

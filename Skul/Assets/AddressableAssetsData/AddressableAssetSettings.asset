@@ -15,9 +15,9 @@ MonoBehaviour:
   m_DefaultGroup: fe4c494b466a1bf4f90f9b41aa09a21b
   m_currentHash:
     serializedVersion: 2
-    Hash: 896dc1cace24ee2f9c258d87e86b50c9
+    Hash: e4d03c7ba1eaf901063f887d125d6b0e
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -59,6 +59,10 @@ MonoBehaviour:
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
+  - {fileID: 11400000, guid: ff2d355ecab39c34cb42b67699ebc41a, type: 2}
+  - {fileID: 11400000, guid: a0111c0553a279e44b06865b7ac1c288, type: 2}
+  - {fileID: 11400000, guid: 226e9fabbffd07f4cbed4170774102de, type: 2}
+  - {fileID: 11400000, guid: 3db85b367ec956c44a6fc8bb0fae6170, type: 2}
   - {fileID: 11400000, guid: bb9d2b8344ef36844bd9675eb32713f4, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -66,50 +70,22 @@ MonoBehaviour:
   m_ProfileSettings:
     m_Profiles:
     - m_InheritedParent: 
-      m_Id: 387a2461cc5fc38439d1f4c3f877ab7d
-      m_ProfileName: New Profile1
-      m_Values:
-      - m_Id: 06eba43563f92df42ad79fc10855ad8b
-        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
-      - m_Id: 23c638fd80a81854084e032dd865b544
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
-      - m_Id: b59a100d6c1b4904da230098a88258bd
-        m_Value: <undefined>
-      - m_Id: cc62d731866fca64db0ce488796aa6bd
-        m_Value: 'ServerData/[BuildTarget]'
-      - m_Id: d08a140ba72fa1a42b764701089604d2
-        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
-    - m_InheritedParent: 
-      m_Id: 4b654fc3da8d59b4f9699a773cefdb8b
-      m_ProfileName: Stage1
-      m_Values:
-      - m_Id: 06eba43563f92df42ad79fc10855ad8b
-        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
-      - m_Id: 23c638fd80a81854084e032dd865b544
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
-      - m_Id: b59a100d6c1b4904da230098a88258bd
-        m_Value: <undefined>
-      - m_Id: cc62d731866fca64db0ce488796aa6bd
-        m_Value: 'ServerData/[BuildTarget]'
-      - m_Id: d08a140ba72fa1a42b764701089604d2
-        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
-    - m_InheritedParent: 
-      m_Id: 5740cc8739439754793aad0a8926639e
-      m_ProfileName: Stage2
-      m_Values:
-      - m_Id: 06eba43563f92df42ad79fc10855ad8b
-        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
-      - m_Id: 23c638fd80a81854084e032dd865b544
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
-      - m_Id: b59a100d6c1b4904da230098a88258bd
-        m_Value: <undefined>
-      - m_Id: cc62d731866fca64db0ce488796aa6bd
-        m_Value: 'ServerData/[BuildTarget]'
-      - m_Id: d08a140ba72fa1a42b764701089604d2
-        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
-    - m_InheritedParent: 
       m_Id: 57ec2bee01001ba4ea90fcc45b4e5179
       m_ProfileName: Default
+      m_Values:
+      - m_Id: 06eba43563f92df42ad79fc10855ad8b
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 23c638fd80a81854084e032dd865b544
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: b59a100d6c1b4904da230098a88258bd
+        m_Value: 
+      - m_Id: cc62d731866fca64db0ce488796aa6bd
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: d08a140ba72fa1a42b764701089604d2
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+    - m_InheritedParent: 
+      m_Id: 81da7e835e1a7104b82de965269fd931
+      m_ProfileName: Test
       m_Values:
       - m_Id: 06eba43563f92df42ad79fc10855ad8b
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
@@ -141,6 +117,10 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Test
+    - Stage1
+    - Stage1Scene
+    - Scene
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: bb9757aec8a80ef4d8fb3be3eb42684c, type: 2}
@@ -153,4 +133,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1d136fc419672174ca6f91a760d9a2cd, type: 2}
   - {fileID: 11400000, guid: 1f3dadb3088f4ea408217e50c19edaed, type: 2}
   - {fileID: 11400000, guid: ae11d9aa8f515934e81e9a8c78e16097, type: 2}
-  m_ActiveProfileId: 57ec2bee01001ba4ea90fcc45b4e5179
+  m_ActiveProfileId: 81da7e835e1a7104b82de965269fd931

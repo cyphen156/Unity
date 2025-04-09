@@ -71,6 +71,7 @@ public class ChangeImage : MonoBehaviour
         if (Input.anyKeyDown && count > 3)
         {
             soundManager.StopEmbeddedBGM();
+            GameManager.instance.ChangeScene("Stage1");
         }
     }
     private void ShowBackground(int index)
@@ -79,6 +80,5 @@ public class ChangeImage : MonoBehaviour
         logo2.SetActive(index == 1);
         SelectedObject.SetActive(index >= 2);
         pressKey.SetActive(index >= 2);
-
     }
 }
