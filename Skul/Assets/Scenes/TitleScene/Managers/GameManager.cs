@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// 게임 시스템을 총괄하는 매니저, 씬 체인지와 같은 굵직한 이벤트 처리
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;

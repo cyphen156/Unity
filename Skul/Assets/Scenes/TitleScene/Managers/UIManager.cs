@@ -6,7 +6,6 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 
     public GameObject LoadingPannel;
-    
     private void Awake()
     {
         if (instance == null)

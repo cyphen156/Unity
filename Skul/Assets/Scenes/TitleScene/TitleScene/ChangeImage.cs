@@ -15,7 +15,7 @@ public class ChangeImage : MonoBehaviour
     public GameObject logo1;
     public GameObject logo2;
     public GameObject HardModeBackground;
-
+    private bool sceneChange;
     public GameObject SelectedObject;
     SoundManager soundManager;
 
@@ -37,6 +37,7 @@ public class ChangeImage : MonoBehaviour
         currentTime = 0f;
         TitleSceneView();
         pressKey.SetActive(false);
+        sceneChange = false;
     }
 
     private void TitleSceneView()
@@ -71,11 +72,17 @@ public class ChangeImage : MonoBehaviour
         if (Input.anyKeyDown && count > 3)
         {
             soundManager.StopEmbeddedBGM();
+            sceneChange = true;
+            pressKey.SetActive(false);
             GameManager.instance.ChangeScene("Stage1");
         }
     }
     private void ShowBackground(int index)
     {
+        if (sceneChange)
+        {
+            return;
+        }
         logo1.SetActive(index == 0);
         logo2.SetActive(index == 1);
         SelectedObject.SetActive(index >= 2);
