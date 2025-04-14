@@ -19,4 +19,6 @@ public class InputManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+   
 }
