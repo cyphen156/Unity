@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 12f3c0732c4570a4c9e438d1c1575840
+guid: b643226cf6407c047a4c26a2c22782e0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2225677169971775246
-    second: Options_AudioDot_0
+      213: -2322345797120148046
+    second: Upgrade_Frame #9474_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Options_AudioDot_0
+      name: Upgrade_Frame #9474_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 8
-        height: 9
+        x: 1
+        y: 1
+        width: 330
+        height: 262
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f8b223f76ecc11e0800000000000000
-      internalID: -2225677169971775246
+      spriteID: 2bd38054dce55cfd0800000000000000
+      internalID: -2322345797120148046
       vertices: []
       indices: 
       edges: []
@@ -212,7 +212,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Upgrade_Frame #9474_0: -2322345797120148046
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,6 +1,9 @@
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static InputManager;
+using static PlayerStateMachine;
 using static UnityEngine.LightAnchor;
 
 public class PlayerController : MonoBehaviour
@@ -13,12 +16,12 @@ public class PlayerController : MonoBehaviour
     private int jumpCount;
     private int dashCount;
     private int ActionLimit = 2;
-    private BoxCollider2D boxCollider;
+    private BoxCollider2D groundCollider;
     public bool isColliderEnable;
     public Vector2 currentDirection;
     public Vector2 jumpDirection;
     private PlayerMovement playerMovement;
-
+   
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -36,9 +39,16 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        groundCollider = GetComponent<BoxCollider2D>();
     }
 
+    private void Update()
+    {
+        if (rb.linearVelocity.y <= -0.1f)
+        {
+            PlayerManager.instance.GetStateMachine().ChangeState(PlayerGroundState.IsFalling);
+        }
+    }
     public void MoveUp()
     {
         jumpDirection = Vector2.up;
@@ -54,7 +64,8 @@ public class PlayerController : MonoBehaviour
         currentDirection = Vector2.left;
         playerMovement.Move(currentDirection * moveSpeed);
         transform.localScale = new Vector3(-1, 1, 1);
-        PlayerManager.instance.GetStateMachine().Walk();
+        PlayerManager.instance.GetStateMachine().SetBoolState("Walk", true);
+
     }
 
     public void MoveRight()
@@ -62,7 +73,7 @@ public class PlayerController : MonoBehaviour
         currentDirection = Vector2.right;
         playerMovement.Move(currentDirection * moveSpeed);
         transform.localScale = new Vector3(1, 1, 1);
-        PlayerManager.instance.GetStateMachine().Walk();
+        PlayerManager.instance.GetStateMachine().SetBoolState("Walk", true);
     }
 
     public void Jump()
@@ -72,16 +83,13 @@ public class PlayerController : MonoBehaviour
         {
             jumpCount++;
             playerMovement.Move(jumpDirection * jumpForce);
-            PlayerManager.instance.GetStateMachine().Jump();
+            PlayerManager.instance.GetStateMachine().PlayAnimation("Jump", PlayerStateMachine.PlayerGroundState.IsFalling);
         }
     }
 
     public void Attack()
     {
-        if (jumpCount != 0)
-        {
-            PlayerManager.instance.GetStateMachine().Attack();
-        }
+        PlayerManager.instance.GetStateMachine().PlayAnimation("Attack");
     }
 
     public void Dash()
@@ -90,28 +98,29 @@ public class PlayerController : MonoBehaviour
         {
             dashCount++;
             // 4프레임이니까
-            PlayerManager.instance.GetStateMachine().Dash();
+            PlayerManager.instance.GetStateMachine().PlayAnimation("Dash");
             StartCoroutine(StartDash(currentDirection, 4));
         }
     }
 
     IEnumerator StartDash(Vector2 currentDirection, int repeatCount)
     {
+        ActiveCollider();
         for (int i = 0; i < repeatCount; ++i)
         {
             playerMovement.Move(currentDirection * moveSpeed);
             yield return null;
         }
+        DeActiveCollider();
     }
     public void UseSkill1()
     {
-        PlayerManager.instance.GetStateMachine().Skill1();
-
+        PlayerManager.instance.GetStateMachine().PlayAnimation("Skill1");
     }
 
     public void UseSkill2()
     {
-        PlayerManager.instance.GetStateMachine().Skill2();
+        PlayerManager.instance.GetStateMachine().PlayAnimation("Skill2");
     }
 
     public void UseSprit()
@@ -122,7 +131,7 @@ public class PlayerController : MonoBehaviour
     public void Switching()
     {
         PlayerManager.instance.SwitchHead();
-        PlayerManager.instance.GetStateMachine().Switching();
+        PlayerManager.instance.GetStateMachine().PlayAnimation("Switching");
     }
 
     public void Interact()
@@ -146,12 +155,18 @@ public class PlayerController : MonoBehaviour
 
     public void ActiveCollider()
     {
-        boxCollider.enabled = true;
+        groundCollider.enabled = true;
     }
 
     public void DeActiveCollider()
     {
-        boxCollider.enabled = false;
+        groundCollider.enabled = false;
+    }
+
+    public void SetGround()
+    {
+        ReSetCount();
+        PlayerManager.instance.GetStateMachine().ChangeState(PlayerGroundState.IsGround);
     }
     public void ReSetCount()
     {

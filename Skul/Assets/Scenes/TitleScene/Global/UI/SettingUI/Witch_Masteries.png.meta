@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5b40a98fb9a94a943aa772e63bcc28a5
+guid: b39d4d721d89afa459a48cac3161a1ff
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5190326694052847467
-    second: Popup_Rookie_0
+      213: 6072272998443359646
+    second: Witch_Masteries_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Popup_Rookie_0
+      name: Witch_Masteries_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 276
-        height: 126
+        y: 1
+        width: 444
+        height: 274
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b6f5f33f0aeb70840800000000000000
-      internalID: 5190326694052847467
+      spriteID: e9d996bae1c054450800000000000000
+      internalID: 6072272998443359646
       vertices: []
       indices: 
       edges: []
@@ -212,7 +212,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Witch_Masteries_0: 6072272998443359646
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

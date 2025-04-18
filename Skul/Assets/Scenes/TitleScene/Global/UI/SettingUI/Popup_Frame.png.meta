@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0d7bb3ce21a1008449886a5d649b4313
+guid: 09d9a96fdbe3db14b872f69770ad2542
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2292837062968856284
-    second: Square44x44Logo_0
+      213: -5252230676943826208
+    second: Popup_Frame_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Square44x44Logo_0
+      name: Popup_Frame_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 1
+        y: 1
+        width: 298
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cdecb1a292bc1df10800000000000000
-      internalID: 2292837062968856284
+      spriteID: 0e29a5ed6045c17b0800000000000000
+      internalID: -5252230676943826208
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Square44x44Logo_0: 2292837062968856284
+      Popup_Frame_0: -5252230676943826208
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

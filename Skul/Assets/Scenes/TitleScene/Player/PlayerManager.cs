@@ -9,9 +9,9 @@ public class PlayerManager : MonoBehaviour
     public GameObject defaultHead;
     public Transform headMountPosition;
 
-    private GameObject firstHead;
-    private GameObject secondHead;
-    private GameObject currentHead;
+    public GameObject firstHead;
+    public GameObject secondHead;
+    public GameObject currentHead;
     public PlayerStateMachine stateMachine;
     private Vector2 startPosition;
 
@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        stateMachine = new PlayerStateMachine();
+        stateMachine = GetComponent<PlayerStateMachine>();
     }
 
     private void OnEnable()
@@ -150,6 +150,7 @@ public class PlayerManager : MonoBehaviour
 
             stateMachine.Initialize(animator);
         }
+        Debug.Log($"[ApplyHeadAnimator] 설정된 애니메이터: {headBase.overrideController.name}");
 
     }
 }

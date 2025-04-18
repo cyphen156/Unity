@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 855e22c5421491142970e05b61311b88
+guid: 601913f4e4fd04247a31de6b6c165661
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1907384658481870532
-    second: Options_Arrow_0
-  - first:
-      213: 9117219141246498594
-    second: Options_Arrow_1
+      213: -4674985583317528536
+    second: Witch_playerDarkQuartz_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -181,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Options_Arrow_0
+      name: Witch_playerDarkQuartz_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 7
-        height: 12
+        width: 136
+        height: 51
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,30 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c39882542cb9785e0800000000000000
-      internalID: -1907384658481870532
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Options_Arrow_1
-      rect:
-        serializedVersion: 2
-        x: 110
-        y: 0
-        width: 7
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 227b36df08ed68e70800000000000000
-      internalID: 9117219141246498594
+      spriteID: 8205940916d1f1fb0800000000000000
+      internalID: -4674985583317528536
       vertices: []
       indices: 
       edges: []
@@ -237,7 +212,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Witch_playerDarkQuartz_0: -4674985583317528536
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
