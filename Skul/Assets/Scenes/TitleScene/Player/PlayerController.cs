@@ -12,11 +12,12 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     public float moveSpeed = 5f;
-    public float jumpForce = 5f;
+    public float jumpForce = 15f;
     private int jumpCount;
     private int dashCount;
     private int ActionLimit = 2;
     private BoxCollider2D groundCollider;
+    private BoxCollider2D HitBoxCollider;
     public bool isColliderEnable;
     public Vector2 currentDirection;
     public Vector2 jumpDirection;
@@ -40,13 +41,15 @@ public class PlayerController : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         groundCollider = GetComponent<BoxCollider2D>();
+        // 머리통에 달려있는 히트박스 찾아오센
+        SetHitBoxCollider();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (rb.linearVelocity.y <= -0.1f)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -5f);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -3f);
             PlayerManager.instance.GetStateMachine().PlayFall();
         }
     }
@@ -96,14 +99,31 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        DeActiveCollider();
         if (jumpCount < ActionLimit)
         {
             jumpCount++;
-            playerMovement.Jump(jumpDirection * jumpForce);
+            // 4프레임이니까
             PlayerManager.instance.GetStateMachine().PlayAnimation("Jump", PlayerStateMachine.PlayerGroundState.IsFalling);
+            StartCoroutine(StartJump(jumpDirection, 4));
         }
-        ActiveCollider();
+    }
+
+    IEnumerator StartJump(Vector2 jumpDirection, int repeatCount)
+    {
+        rb.gravityScale = 0f;
+        float activeColliderTime = 0.5f;
+        if (jumpDirection == Vector2.up)
+        {
+            activeColliderTime *= 2;
+        }
+        StartCoroutine(TemporaryDeactiveComponent(groundCollider, activeColliderTime));
+        StartCoroutine(TemporaryDeactiveComponent(HitBoxCollider, activeColliderTime));
+        for (int i = 0; i < repeatCount; ++i)
+        {
+            playerMovement.Move(jumpDirection * jumpForce);
+            yield return new WaitForSeconds(0.15f);
+        }
+        rb.gravityScale = 1f;
     }
 
     public void Attack()
@@ -124,14 +144,15 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator StartDash(Vector2 currentDirection, int repeatCount)
     {
-        DeActiveCollider();
+        // 무적처리
         PlayerManager.instance.GetStateMachine().SetDash(true);
         for (int i = 0; i < repeatCount; ++i)
         {
             playerMovement.Move(currentDirection * moveSpeed * 10);
-            yield return null;
+            yield return new WaitForSeconds(0.2f);
         }
-        ActiveCollider();
+
+        // 무적 비활성화
         PlayerManager.instance.GetStateMachine().SetDash(false);
     }
     public void UseSkill1()
@@ -174,14 +195,21 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Scroll Head triggered.");
     }
 
-    public void ActiveCollider()
+    public void ActiveComponent(Behaviour behaviour)
     {
-        groundCollider.enabled = true;
+        behaviour.enabled = true;
     }
 
-    public void DeActiveCollider()
+    public void DeActiveComponent(Behaviour behaviour)
     {
-        groundCollider.enabled = false;
+        behaviour.enabled = false;
+    }
+
+    IEnumerator TemporaryDeactiveComponent(Behaviour behaviour, float activeTime)
+    {
+        DeActiveComponent(behaviour);
+        yield return new WaitForSeconds(activeTime);
+        ActiveComponent(behaviour);
     }
 
     public void SetGround()
@@ -203,6 +231,19 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("지면 착지");
             SetGround();
+        }
+    }
+
+    public void SetHitBoxCollider()
+    {
+        HitBoxCollider = PlayerManager.instance.GetHitBoxCollider();
+        if (HitBoxCollider == null)
+        {
+            Debug.LogError("[PlayerController] HitBoxCollider 할당 실패! currentHead에 BoxCollider2D 없음.");
+        }
+        else
+        {
+            Debug.Log("[PlayerController] HitBoxCollider 연결 완료: " + HitBoxCollider.name);
         }
     }
 }

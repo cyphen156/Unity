@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject secondHead;
     public GameObject currentHead;
     public PlayerStateMachine stateMachine;
+    public PlayerController playerController;
     private Vector2 startPosition;
 
     private void Awake()
@@ -28,6 +30,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         stateMachine = GetComponent<PlayerStateMachine>();
+        playerController = GetComponent<PlayerController>();
     }
 
     private void OnEnable()
@@ -38,13 +41,11 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         startPosition = transform.position;
-        firstHead = Instantiate(defaultHead, headMountPosition);
-        currentHead = firstHead;
+        ResetPlayer();
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void ResetPlayer()
     {
-        currentHead = null;
 
         if (firstHead != null )
         {
@@ -54,6 +55,8 @@ public class PlayerManager : MonoBehaviour
         {
             Destroy(secondHead);
         }
+
+        currentHead = null;
 
         firstHead = Instantiate(defaultHead, headMountPosition);
         currentHead = firstHead;
@@ -148,7 +151,7 @@ public class PlayerManager : MonoBehaviour
         {
             Animator animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = headBase.overrideController;
-
+            playerController.SetHitBoxCollider();
             stateMachine.Initialize(animator);
         }
         Debug.Log($"[ApplyHeadAnimator] 설정된 애니메이터: {headBase.overrideController.name}");
@@ -159,5 +162,15 @@ public class PlayerManager : MonoBehaviour
         transform.position = startPosition;
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
 
+    }
+
+    public BoxCollider2D GetHitBoxCollider()
+    {
+        if (currentHead == null)
+        {
+            return null;
+        }
+        Debug.Log(currentHead.ToString() + "콜라이더 설정");
+        return currentHead.GetComponent<BoxCollider2D>();
     }
 }

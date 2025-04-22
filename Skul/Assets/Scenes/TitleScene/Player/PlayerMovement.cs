@@ -1,23 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody rb;
+    Rigidbody2D rb;
 
-    private void Start()
+    private void Awake()
     {
-        {
-            rb = GetComponent<Rigidbody>();         
-        }
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void Move(Vector2 direction)
     {
         transform.Translate(direction * Time.deltaTime);
-    }
-
-    public void Jump(Vector2 direction)
-    {
-        rb.AddForce(direction * Time.deltaTime);
     }
 }
