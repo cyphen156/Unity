@@ -16,11 +16,15 @@ public class PlayerStateMachine : MonoBehaviour
     private float currentTime;
     private float setTime;
     public PlayerGroundState currentGroundState;
+    private bool isAttacking; 
+    public bool isDashing;
     private void Awake()
     {
         currentTime = 0.0f;
         setTime = 10.0f;    // 10초 대기했으면 많이 기다려 줫다
         currentGroundState = PlayerGroundState.IsGround;
+        isAttacking = false;
+        isDashing = false;
     }
 
     private void Update()
@@ -45,6 +49,27 @@ public class PlayerStateMachine : MonoBehaviour
         this.animator = animator;
     }
 
+    public void PlayAttackAnimation()
+    {
+        
+        if (isAttacking)
+        {
+            return;
+        }
+        isAttacking = true;
+        animator.SetTrigger("Attack");
+        PlayerManager.instance.GetStateMachine().SetBoolState("IsAttacking", true);
+    }
+    public void PlayFall()
+    {
+        if (currentGroundState == PlayerGroundState.IsFalling)
+        {
+            return;
+        }
+
+        animator.SetTrigger("Fall");
+        ChangeState(PlayerGroundState.IsFalling);
+    }
     public void PlayAnimation(string triggerName)
     {
         if (animator != null)
@@ -64,7 +89,12 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void SetBoolState(string boolStateName, bool state)
     {
+        if (boolStateName == "IsAttacking")
+        {
+            isAttacking = state;
+        }
         animator.SetBool(boolStateName, state);
+
     }
 
     public void ChangeState(PlayerGroundState newState)
@@ -100,5 +130,10 @@ public class PlayerStateMachine : MonoBehaviour
                 SetBoolState("IsGround", false);
                 break;
         }
+    }
+
+    public void SetDash(bool state)
+    {
+        isDashing = state;
     }
 }

@@ -144,13 +144,18 @@ public class InputManager : MonoBehaviour
     private void InitBinding()
     {
         RegisterBinding(Controll.MoveUp, KeyCode.UpArrow, InputTriggerType.Hold);
+        RegisterBinding(Controll.MoveUp, KeyCode.UpArrow, InputTriggerType.Up);
         RegisterBinding(Controll.MoveDown, KeyCode.DownArrow, InputTriggerType.Hold);
+        RegisterBinding(Controll.MoveDown, KeyCode.DownArrow, InputTriggerType.Up);
         RegisterBinding(Controll.MoveLeft, KeyCode.LeftArrow, InputTriggerType.Hold);
+        RegisterBinding(Controll.MoveLeft, KeyCode.LeftArrow, InputTriggerType.Up);
         RegisterBinding(Controll.MoveRight, KeyCode.RightArrow, InputTriggerType.Hold);
+        RegisterBinding(Controll.MoveRight, KeyCode.RightArrow, InputTriggerType.Up);
         RegisterBinding(Controll.Scroll, KeyCode.Tab, InputTriggerType.Down);
         RegisterBinding(Controll.ArrowDash, KeyCode.T, InputTriggerType.Down);
         RegisterBinding(Controll.Interaction, KeyCode.F, InputTriggerType.Down);
         RegisterBinding(Controll.Attack, KeyCode.X, InputTriggerType.Hold);
+        RegisterBinding(Controll.Attack, KeyCode.X, InputTriggerType.Up);
         RegisterBinding(Controll.Jump, KeyCode.C, InputTriggerType.Down);
         RegisterBinding(Controll.Dash, KeyCode.Z, InputTriggerType.Down);
         RegisterBinding(Controll.Skill1, KeyCode.A, InputTriggerType.Down);
@@ -165,19 +170,64 @@ public class InputManager : MonoBehaviour
         switch (control)
         {
             case Controll.MoveUp:
-                playerController.MoveUp(); 
+                {
+                    if (trigger == InputTriggerType.Hold)
+                    {
+                        playerController.MoveUp(); 
+                    }
+                    else
+                    {
+                        playerController.StopMove();
+                    }
+                }
                 break;
             case Controll.MoveDown:
-                playerController.MoveDown(); 
+                {
+                    if (trigger == InputTriggerType.Hold)
+                    {
+                        playerController.MoveDown();
+                    }
+                    else
+                    {
+                        playerController.StopMove();
+                    }
+                }
                 break;
             case Controll.MoveLeft:
-                playerController.MoveLeft(); 
+                {
+                    if (trigger == InputTriggerType.Hold)
+                    {
+                        playerController.MoveLeft();
+                    }
+                    else
+                    {
+                        playerController.StopMove();
+                    }
+                }
                 break;
             case Controll.MoveRight:
-                playerController.MoveRight(); 
+                {
+                    if (trigger == InputTriggerType.Hold)
+                    {
+                        playerController.MoveRight();
+                    }
+                    else
+                    {
+                        playerController.StopMove();
+                    }
+                }
                 break;
             case Controll.Attack:
-                playerController.Attack(); 
+                {
+                    if (trigger == InputTriggerType.Hold)
+                    {
+                        playerController.Attack();
+                    }
+                    else
+                    {
+                        playerController.KeyUp("IsAttacking");
+                    }
+                }
                 break;
             case Controll.Jump:
                 playerController.Jump(); 

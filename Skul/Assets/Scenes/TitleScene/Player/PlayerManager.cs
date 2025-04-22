@@ -40,6 +40,7 @@ public class PlayerManager : MonoBehaviour
         startPosition = transform.position;
         firstHead = Instantiate(defaultHead, headMountPosition);
         currentHead = firstHead;
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void ResetPlayer()
     {
@@ -151,6 +152,12 @@ public class PlayerManager : MonoBehaviour
             stateMachine.Initialize(animator);
         }
         Debug.Log($"[ApplyHeadAnimator] 설정된 애니메이터: {headBase.overrideController.name}");
+    }
+
+    public void SetStartPosition()
+    {
+        transform.position = startPosition;
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
 
     }
 }

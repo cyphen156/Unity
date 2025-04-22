@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 currentDirection;
     public Vector2 jumpDirection;
     private PlayerMovement playerMovement;
-   
+    private LayerMask groundLayer = 1 << 9;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour
     {
         if (rb.linearVelocity.y <= -0.1f)
         {
-            PlayerManager.instance.GetStateMachine().ChangeState(PlayerGroundState.IsFalling);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -5f);
+            PlayerManager.instance.GetStateMachine().PlayFall();
         }
     }
     public void MoveUp()
@@ -61,19 +62,36 @@ public class PlayerController : MonoBehaviour
 
     public void MoveLeft()
     {
+        if (PlayerManager.instance.GetStateMachine().isDashing)
+        {
+            return;
+        }
         currentDirection = Vector2.left;
         playerMovement.Move(currentDirection * moveSpeed);
         transform.localScale = new Vector3(-1, 1, 1);
         PlayerManager.instance.GetStateMachine().SetBoolState("Walk", true);
-
     }
 
     public void MoveRight()
     {
+        if (PlayerManager.instance.GetStateMachine().isDashing)
+        {
+            return;
+        }
         currentDirection = Vector2.right;
         playerMovement.Move(currentDirection * moveSpeed);
         transform.localScale = new Vector3(1, 1, 1);
         PlayerManager.instance.GetStateMachine().SetBoolState("Walk", true);
+    }
+
+    public void StopMove()
+    {
+        currentDirection = Vector2.zero;
+        KeyUp("Walk");
+    }
+    public void KeyUp(string stateName)
+    {
+        PlayerManager.instance.GetStateMachine().SetBoolState(stateName, false);
     }
 
     public void Jump()
@@ -82,14 +100,15 @@ public class PlayerController : MonoBehaviour
         if (jumpCount < ActionLimit)
         {
             jumpCount++;
-            playerMovement.Move(jumpDirection * jumpForce);
+            playerMovement.Jump(jumpDirection * jumpForce);
             PlayerManager.instance.GetStateMachine().PlayAnimation("Jump", PlayerStateMachine.PlayerGroundState.IsFalling);
         }
+        ActiveCollider();
     }
 
     public void Attack()
     {
-        PlayerManager.instance.GetStateMachine().PlayAnimation("Attack");
+        PlayerManager.instance.GetStateMachine().PlayAttackAnimation();
     }
 
     public void Dash()
@@ -105,13 +124,15 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator StartDash(Vector2 currentDirection, int repeatCount)
     {
-        ActiveCollider();
+        DeActiveCollider();
+        PlayerManager.instance.GetStateMachine().SetDash(true);
         for (int i = 0; i < repeatCount; ++i)
         {
-            playerMovement.Move(currentDirection * moveSpeed);
+            playerMovement.Move(currentDirection * moveSpeed * 10);
             yield return null;
         }
-        DeActiveCollider();
+        ActiveCollider();
+        PlayerManager.instance.GetStateMachine().SetDash(false);
     }
     public void UseSkill1()
     {
@@ -165,12 +186,23 @@ public class PlayerController : MonoBehaviour
 
     public void SetGround()
     {
-        ReSetCount();
         PlayerManager.instance.GetStateMachine().ChangeState(PlayerGroundState.IsGround);
+        Debug.Log("집에 가지마 베붸");
+        ReSetCount();
     }
     public void ReSetCount()
     {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
         jumpCount = 0;
         dashCount = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
+        {
+            Debug.Log("지면 착지");
+            SetGround();
+        }
     }
 }

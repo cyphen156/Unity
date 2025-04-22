@@ -53,6 +53,8 @@ public class ResourceManager : MonoBehaviour
             {
                 Debug.LogError($"[GameManager] 씬 {sceneName} 비동기 로딩 실패");
             }
+
+            PlayerManager.instance.SetStartPosition();
         };
     }
 
