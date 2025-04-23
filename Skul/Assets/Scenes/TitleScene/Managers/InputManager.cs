@@ -13,7 +13,6 @@ public class InputManager : MonoBehaviour
     private PlayerController playerController;
     private GameObject UI;
     private UIManager uiManager;
-
     // 키입력 이벤트 정의
     public enum Controll
     {
@@ -55,6 +54,11 @@ public class InputManager : MonoBehaviour
     // 키입력 처리기 매핑
     private List<InputBinding> inputBindings = new List<InputBinding>();
 
+    private bool isWaitingForKey = false;
+    private Controll pendingControl;
+    private string controlNameToUpdate;
+
+
     private void Awake()
     {
         if (instance == null)
@@ -80,6 +84,23 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        if (isWaitingForKey)
+        {
+            foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(key))
+                {
+                    if (key != KeyCode.Escape)
+                    {
+                        RebindKey(pendingControl.ToString(), key);
+                        UIManager.instance.UpdateBindingText(controlNameToUpdate, key);
+                    }
+                    isWaitingForKey = false;
+                    break;
+                }
+            }
+            return;
+        }
         for (int i = 0; i < inputBindings.Count; ++i)
         {
             var binding = inputBindings[i];
@@ -125,17 +146,22 @@ public class InputManager : MonoBehaviour
             triggerType = trigger
         });
     }
-
+    public void StartRebind(Controll control, string controlName)
+    {
+        isWaitingForKey = true;
+        pendingControl = control;
+        controlNameToUpdate = controlName;
+        UIManager.instance.ShowRebindingText(controlNameToUpdate);
+    }
     public void RebindKey(string controlName, KeyCode newKey)
     {
         if (Enum.TryParse(controlName, out Controll ctrl))
         {
-            foreach (var b in inputBindings)
+            for (int i = 0; i < inputBindings.Count; ++i)
             {
-                if (b.controlType == ctrl)
+                if (inputBindings[i].controlType == ctrl)
                 {
-                    b.key = newKey;
-                    break;
+                    inputBindings[i].key = newKey;
                 }
             }
         }
@@ -143,6 +169,8 @@ public class InputManager : MonoBehaviour
 
     private void InitBinding()
     {
+        inputBindings.Clear();
+
         RegisterBinding(Controll.MoveUp, KeyCode.UpArrow, InputTriggerType.Hold);
         RegisterBinding(Controll.MoveUp, KeyCode.UpArrow, InputTriggerType.Up);
         RegisterBinding(Controll.MoveDown, KeyCode.DownArrow, InputTriggerType.Hold);
@@ -163,7 +191,7 @@ public class InputManager : MonoBehaviour
         RegisterBinding(Controll.Sprit, KeyCode.D, InputTriggerType.Down);
         RegisterBinding(Controll.Switching, KeyCode.Space, InputTriggerType.Down);
         RegisterBinding(Controll.PressEsc, KeyCode.Escape, InputTriggerType.Down);
-
+        Debug.Log("[InputManager] :: 키 바인딩 초기화 완료");
     }
     private void ExecutePlayerAction(Controll control, InputTriggerType trigger)
     {
@@ -257,6 +285,16 @@ public class InputManager : MonoBehaviour
                 playerController.Scroll(); 
                 break;
             case Controll.PressEsc:
+                {
+                    if (currentReceiver == InputReceiver.PlayerOnly)
+                    {
+                        ExecuteSystemUIOpen();
+                    }
+                    else
+                    {
+                        ExecuteSystemUIClose();
+                    }
+                }
                 // 메뉴 활성화하기
                 break;
         }
@@ -269,5 +307,21 @@ public class InputManager : MonoBehaviour
             
         }
         //uiManager.ProcessUIInput(control.ToString(), trigger.ToString());
+    }
+    public void ExecuteSystemUIOpen()
+    {
+        GameManager.instance.PauseGame();
+        uiManager.ActiveUIPannel(uiManager.SystemUIPannel);
+        SetInputReceiver(InputReceiver.UIOnly);
+    }
+    public void ExecuteSystemUIClose()
+    {
+        GameManager.instance.ResumeGame();
+        uiManager.DeactiveUIPannel(uiManager.SystemUIPannel);
+        SetInputReceiver(InputReceiver.PlayerOnly);
+    }
+    public void ResetKeyBindings()
+    {
+        InitBinding();
     }
 }

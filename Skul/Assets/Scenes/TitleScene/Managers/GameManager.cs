@@ -24,8 +24,19 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
     }
+
     public void ChangeScene(string SceneName)
     {
         ResourceManager.instance.LoadScene(SceneName);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
     }
 }

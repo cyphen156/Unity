@@ -15,7 +15,6 @@ public class ResourceManager : MonoBehaviour
     private AsyncOperationHandle<IList<GameObject>> labelHandle;
 
     private Dictionary<string, GameObject> loadedAssets = new Dictionary<string, GameObject>();
-    
     private void Awake()
     {
         if (instance == null)
@@ -184,22 +183,30 @@ public class ResourceManager : MonoBehaviour
         GameObject bossUIPannel = UIManager.instance.GetBossUIPannel();
 
         // 기존 UI 제거
-        Transform currentBossUIFirst = bossUIPannel.transform.Find("BossUIFirst");
-
-        if (currentBossUIFirst != null)
+        foreach (Transform child in bossUIPannel.transform)
         {
-            Destroy(currentBossUIFirst.gameObject);
-        }
-
-        Transform currentBossUISecond = bossUIPannel.transform.Find("BossUISecond");
-
-        if (currentBossUISecond != null)
-        {
-            Destroy(currentBossUISecond);
+            if (child.name == "BossUIFirst" || child.name == "BossUISecond")
+            {
+                Destroy(child.gameObject);
+                Debug.Log($"[ResourceManager] 기존 {child.name} 파괴");
+            }
         }
 
         // 새 UI 장착
-        GameObject changeUIFirst = GameObject.FindGameObjectWithTag("BossUIFirst");
+        Scene currentScene = SceneManager.GetActiveScene();
+        GameObject loadCanvas = GameObject.FindGameObjectWithTag("LoadCanvas");
+        GameObject[] candidatesFirst = GameObject.FindGameObjectsWithTag("BossUIFirst");
+
+        GameObject changeUIFirst = null;
+        foreach (var c in candidatesFirst)
+        {
+            if (c.scene == currentScene)
+            {
+                changeUIFirst = c;
+                break;
+            }
+        }
+
         if (changeUIFirst == null)
         {
             Debug.LogWarning("[ResourceManager] BossUIFirst 태그를 가진 오브젝트가 없습니다.");
@@ -211,16 +218,29 @@ public class ResourceManager : MonoBehaviour
             Debug.Log("[ResourceManager] BossUIFirst 교체 완료");
         }
 
-        GameObject changeUISecond = GameObject.FindGameObjectWithTag("BossUISecond");
+        GameObject[] candidatesSecond = GameObject.FindGameObjectsWithTag("BossUISecond");
+
+        GameObject changeUISecond = null;
+        foreach (var c in candidatesSecond)
+        {
+            if (c.scene == currentScene)
+            {
+                changeUISecond = c;
+                break;
+            }
+        }
         if (changeUISecond == null)
         {
             Debug.LogWarning("[ResourceManager] BossUISecond 태그를 가진 오브젝트가 없습니다.");
         }
         else
-        { 
+        {
             changeUISecond.transform.SetParent(bossUIPannel.transform, false);
             Debug.Log("[ResourceManager] BossUISecond 교체 완료");
         }
 
+        UIManager.instance.DeactiveUIPannel(bossUIPannel);
+        Destroy(loadCanvas);
+        Debug.Log("[ResourceManager] 로드용 UI Canvas 삭제");
     }
 }

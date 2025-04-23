@@ -12,6 +12,9 @@ TagManager:
   - BossUIFirst
   - BossUISecond
   - BossHPBar
+  - BossUIPannel
+  - LoadCanvas
+  - SystemUIPannel
   layers:
   - Default
   - TransparentFX

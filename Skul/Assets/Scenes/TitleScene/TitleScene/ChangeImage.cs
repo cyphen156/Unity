@@ -28,6 +28,8 @@ public class ChangeImage : MonoBehaviour
     void Start()
     {
         restrictTime = 4.0f;
+        UIManager.instance.DeactiveUIPannel(UIManager.instance.BossUIPannel);
+        UIManager.instance.DeactiveUIPannel(UIManager.instance.SystemUIPannel);
     }
 
     // 씬 재활성시 마다 호출
