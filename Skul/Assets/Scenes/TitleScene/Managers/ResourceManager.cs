@@ -47,6 +47,7 @@ public class ResourceManager : MonoBehaviour
         {
             if (op.Status == AsyncOperationStatus.Succeeded)
             {
+                ChangeAssets();
                 Debug.Log($"[GameManager] 씬 {sceneName} 비동기 로드 완료");
             }
             else
@@ -150,5 +151,76 @@ public class ResourceManager : MonoBehaviour
     {
         ReleaseResource();
         ReleaseResources();
+    }
+
+    private void ChangeAssets()
+    {
+        SetUpBackground();
+        SetUpBossUIPannel();
+    }
+    private void SetUpBackground()
+    {
+        GameObject bg = GameObject.FindGameObjectWithTag("ScrollBackground");
+        if (bg != null)
+        {
+            if (bg.GetComponent<ScrollBackground>() == null)
+            {
+                bg.AddComponent<ScrollBackground>();
+                Debug.Log("[ResourceManager] ScrollBackground 스크립트 자동 부착 완료");
+            }
+        }
+        else
+        {
+            if (bg.GetComponent<FixedBackground>() == null)
+            {
+                bg.AddComponent<FixedBackground>();
+            }
+            Debug.Log("[ResourceManager] ScrollBackground 태그 객체 없음");
+            Debug.Log("[ResourceManager] FixedBackground 스크립트 자동 부착 완료");
+        }
+    }
+    private void SetUpBossUIPannel()
+    {
+        GameObject bossUIPannel = UIManager.instance.GetBossUIPannel();
+
+        // 기존 UI 제거
+        Transform currentBossUIFirst = bossUIPannel.transform.Find("BossUIFirst");
+
+        if (currentBossUIFirst != null)
+        {
+            Destroy(currentBossUIFirst.gameObject);
+        }
+
+        Transform currentBossUISecond = bossUIPannel.transform.Find("BossUISecond");
+
+        if (currentBossUISecond != null)
+        {
+            Destroy(currentBossUISecond);
+        }
+
+        // 새 UI 장착
+        GameObject changeUIFirst = GameObject.FindGameObjectWithTag("BossUIFirst");
+        if (changeUIFirst == null)
+        {
+            Debug.LogWarning("[ResourceManager] BossUIFirst 태그를 가진 오브젝트가 없습니다.");
+        }
+
+        else
+        {
+            changeUIFirst.transform.SetParent(bossUIPannel.transform, false);
+            Debug.Log("[ResourceManager] BossUIFirst 교체 완료");
+        }
+
+        GameObject changeUISecond = GameObject.FindGameObjectWithTag("BossUISecond");
+        if (changeUISecond == null)
+        {
+            Debug.LogWarning("[ResourceManager] BossUISecond 태그를 가진 오브젝트가 없습니다.");
+        }
+        else
+        { 
+            changeUISecond.transform.SetParent(bossUIPannel.transform, false);
+            Debug.Log("[ResourceManager] BossUISecond 교체 완료");
+        }
+
     }
 }

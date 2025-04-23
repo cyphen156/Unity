@@ -1,11 +1,15 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
-
     public GameObject LoadingPannel;
+    public GameObject BossUIPannel;
+    public Slider bossHPBar;
+
     private void Awake()
     {
         if (instance == null)
@@ -27,5 +31,20 @@ public class UIManager : MonoBehaviour
     public void EndLoad()
     {
         LoadingPannel.SetActive(false);
+    }
+
+    public GameObject GetBossUIPannel()
+    {
+        return BossUIPannel;
+    }
+    public void ActiveBossUI()
+    {
+        bossHPBar.transform.SetAsLastSibling();
+        BossUIPannel.SetActive(true);
+    }
+
+    public void DeactiveBossUI()
+    {
+        BossUIPannel.SetActive(false);
     }
 }

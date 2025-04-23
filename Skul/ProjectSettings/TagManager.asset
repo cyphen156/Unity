@@ -8,6 +8,10 @@ TagManager:
   - LoadingPannel
   - UI
   - Input
+  - ScrollBackground
+  - BossUIFirst
+  - BossUISecond
+  - BossHPBar
   layers:
   - Default
   - TransparentFX
