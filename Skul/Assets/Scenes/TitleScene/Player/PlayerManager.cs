@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -46,7 +47,6 @@ public class PlayerManager : MonoBehaviour
     }
     public void ResetPlayer()
     {
-
         if (firstHead != null )
         {
             Destroy(firstHead);
@@ -61,11 +61,12 @@ public class PlayerManager : MonoBehaviour
         firstHead = Instantiate(defaultHead, headMountPosition);
         currentHead = firstHead;
         SetHeadState(currentHead, true);
-        secondHead = null;
-        transform.position = startPosition;
         ApplyHeadAnimator();
+        secondHead = null;
+        
+        transform.position = startPosition;
     }
-
+    
     public void SwitchHead()
     {
         // 바꿀 머리통이 없음
@@ -154,14 +155,28 @@ public class PlayerManager : MonoBehaviour
             playerController.SetHitBoxCollider();
             stateMachine.Initialize(animator);
         }
+
+        UIManager.instance.SetHeadIcon("HeadIcon1", headBase.GetHeadIcon1());
+        GameObject otherHead = (currentHead == firstHead) ? secondHead : firstHead;
+        if (otherHead != null)
+        {
+            HeadBase altBase = otherHead.GetComponent<HeadBase>();
+            UIManager.instance.SetHeadIcon("HeadIcon2", altBase.GetHeadIcon2());
+        }
+        UIManager.instance.SetSkillIcons(
+            headBase.GetSkillIcon1(),
+            headBase.GetSkillIcon2()
+        );
+
         Debug.Log($"[ApplyHeadAnimator] 설정된 애니메이터: {headBase.overrideController.name}");
     }
 
-    public void SetStartPosition()
+    public void SetStart()
     {
         transform.position = startPosition;
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
-
+        UIManager.instance.ActiveUIPannel(UIManager.instance.PlayerUIPannel);
+        stateMachine.PlayAnimation("Reset");
     }
 
     public BoxCollider2D GetHitBoxCollider()

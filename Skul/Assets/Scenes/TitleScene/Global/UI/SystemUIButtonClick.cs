@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SystemUIButtonClick : MonoBehaviour
 {
-
-
     public void OnReset()
     {
         InputManager.instance.ResetKeyBindings();

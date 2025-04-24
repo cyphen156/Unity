@@ -15,6 +15,9 @@ TagManager:
   - BossUIPannel
   - LoadCanvas
   - SystemUIPannel
+  - PlayerUIPannel
+  - Monster
+  - DefaultSkill1
   layers:
   - Default
   - TransparentFX
@@ -26,9 +29,9 @@ TagManager:
   - Avatar
   - Item
   - Ground
-  - 
-  - 
-  - 
+  - Wall
+  - Skill
+  - Monster
   - 
   - 
   - 

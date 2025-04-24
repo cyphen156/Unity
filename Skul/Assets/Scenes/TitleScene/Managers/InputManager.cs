@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour
         Dash,
         Skill1,
         Skill2,
-        Sprit,
+        Spirit,
         Switching,
         PressEsc
     }
@@ -106,13 +106,22 @@ public class InputManager : MonoBehaviour
             var binding = inputBindings[i];
             bool triggered = false;
             if (binding.triggerType == InputTriggerType.Hold)
+            {
                 triggered = Input.GetKey(binding.key);
+            }
             else if (binding.triggerType == InputTriggerType.Down)
+            {
                 triggered = Input.GetKeyDown(binding.key);
+            }
             else if (binding.triggerType == InputTriggerType.Up)
+            {
                 triggered = Input.GetKeyUp(binding.key);
+            }
 
-            if (!triggered) continue;
+            if (!triggered)
+            {
+                continue;
+            }
 
             switch (currentReceiver)
             {
@@ -121,7 +130,7 @@ public class InputManager : MonoBehaviour
                         ExecutePlayerAction(binding.controlType, binding.triggerType);
                     break;
                 case InputReceiver.UIOnly:
-                    ExecuteUIAction();
+                    ExecuteUIAction(binding.controlType, binding.triggerType);
                     break;
             }
         }
@@ -188,10 +197,46 @@ public class InputManager : MonoBehaviour
         RegisterBinding(Controll.Dash, KeyCode.Z, InputTriggerType.Down);
         RegisterBinding(Controll.Skill1, KeyCode.A, InputTriggerType.Down);
         RegisterBinding(Controll.Skill2, KeyCode.S, InputTriggerType.Down);
-        RegisterBinding(Controll.Sprit, KeyCode.D, InputTriggerType.Down);
+        RegisterBinding(Controll.Spirit, KeyCode.D, InputTriggerType.Down);
         RegisterBinding(Controll.Switching, KeyCode.Space, InputTriggerType.Down);
         RegisterBinding(Controll.PressEsc, KeyCode.Escape, InputTriggerType.Down);
         Debug.Log("[InputManager] :: 키 바인딩 초기화 완료");
+    }
+
+    public KeyCode GetDefaultKey(Controll control)
+    {
+        switch (control)
+        {
+            case Controll.MoveUp: 
+                return KeyCode.UpArrow;
+            case Controll.MoveDown: 
+                return KeyCode.DownArrow;
+            case Controll.MoveLeft: 
+                return KeyCode.LeftArrow;
+            case Controll.MoveRight: 
+                return KeyCode.RightArrow;
+            case Controll.Scroll: 
+                return KeyCode.Tab;
+            case Controll.ArrowDash: 
+                return KeyCode.T;
+            case Controll.Interaction: 
+                return KeyCode.F;
+            case Controll.Attack: 
+                return KeyCode.X;
+            case Controll.Jump: 
+                return KeyCode.C;
+            case Controll.Dash: 
+                return KeyCode.Z;
+            case Controll.Skill1: 
+                return KeyCode.A;
+            case Controll.Skill2: 
+                return KeyCode.S;
+            case Controll.Spirit: 
+                return KeyCode.D;
+            case Controll.Switching: 
+                return KeyCode.Space;
+            default: return KeyCode.None;
+        }
     }
     private void ExecutePlayerAction(Controll control, InputTriggerType trigger)
     {
@@ -269,8 +314,8 @@ public class InputManager : MonoBehaviour
             case Controll.Skill2:
                 playerController.UseSkill2(); 
                 break;
-            case Controll.Sprit:
-                playerController.UseSprit(); 
+            case Controll.Spirit:
+                playerController.UseSpirit(); 
                 break;
             case Controll.Switching:
                 playerController.Switching(); 
@@ -300,11 +345,26 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private void ExecuteUIAction()
+    private void ExecuteUIAction(Controll control, InputTriggerType trigger)
     {
         if (Input.anyKey)
         {
-            
+            switch (control)
+            {
+                case Controll.PressEsc:
+                    {
+                        if (currentReceiver == InputReceiver.PlayerOnly)
+                        {
+                            ExecuteSystemUIOpen();
+                        }
+                        else
+                        {
+                            ExecuteSystemUIClose();
+                        }
+                    }
+                    // 메뉴 활성화하기
+                    break;
+            }
         }
         //uiManager.ProcessUIInput(control.ToString(), trigger.ToString());
     }
@@ -323,5 +383,6 @@ public class InputManager : MonoBehaviour
     public void ResetKeyBindings()
     {
         InitBinding();
+        UIManager.instance.UpdateAllBindingTexts();
     }
 }

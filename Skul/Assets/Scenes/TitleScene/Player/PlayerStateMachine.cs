@@ -1,6 +1,5 @@
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem.XR.Haptics;
 
 public class PlayerStateMachine : MonoBehaviour 
 {
@@ -135,5 +134,27 @@ public class PlayerStateMachine : MonoBehaviour
     public void SetDash(bool state)
     {
         isDashing = state;
+    }
+
+    public void PlayDeathSequence()
+    {
+        animator.SetTrigger("Dead");
+
+        PlayerManager.instance.StartCoroutine(WaitForDeathAnimation());
+    }
+
+    private IEnumerator WaitForDeathAnimation()
+    {
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+
+        while (!state.IsName("Dead"))
+        {
+            yield return null;
+            state = animator.GetCurrentAnimatorStateInfo(0);
+        }
+
+        yield return new WaitForSeconds(state.length);
+
+        GameManager.instance.ChangeScene("Stage1");
     }
 }

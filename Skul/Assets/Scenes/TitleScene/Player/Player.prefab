@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 7079570374730687641}
   - component: {fileID: 253612685729065273}
   - component: {fileID: 4950836689273263327}
+  - component: {fileID: 3059747147216162365}
   - component: {fileID: 2785459542989184910}
   - component: {fileID: 6210242041463127526}
   - component: {fileID: 2445924149397585795}
@@ -70,6 +71,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1673292445995332762}
+  - {fileID: 4378667333669385086}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &253612685729065273
@@ -186,6 +188,34 @@ MonoBehaviour:
   isColliderEnable: 0
   currentDirection: {x: 0, y: 0}
   jumpDirection: {x: 0, y: 0}
+--- !u!114 &3059747147216162365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785671520115709539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53f85fd6da062f54ca72d1bad1d3e803, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseHP: 0
+  baseStemina: 0
+  baseAttackPower: 0
+  baseAttackSpeed: 0
+  baseCriticalChance: 0
+  baseCriticalMultiplier: 0
+  cooldownReduction: 0
+  maxHP: 0
+  currentHP: 0
+  maxStemina: 0
+  currentStemina: 0
+  currentAttackPower: 0
+  currentAttackSpeed: 0
+  currentCriticalChance: 0
+  currentCriticalMultiplier: 0
+  currentCooldownReduction: 0
 --- !u!114 &2785459542989184910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +260,7 @@ MonoBehaviour:
   secondHead: {fileID: 0}
   currentHead: {fileID: 0}
   stateMachine: {fileID: 0}
+  playerController: {fileID: 0}
 --- !u!95 &1206689864021240826
 Animator:
   serializedVersion: 7
@@ -380,3 +411,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!1 &5051088111465235745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4378667333669385086}
+  m_Layer: 6
+  m_Name: SkillPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4378667333669385086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5051088111465235745}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1, y: 0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7079570374730687641}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
+    private PlayerStatus status;
 
     public float moveSpeed = 5f;
     public float jumpForce = 15f;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public Vector2 jumpDirection;
     private PlayerMovement playerMovement;
     private LayerMask groundLayer = 1 << 9;
+    private Transform skillPosition;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,6 +44,8 @@ public class PlayerController : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         groundCollider = GetComponent<BoxCollider2D>();
+        status = GetComponent<PlayerStatus>();
+        skillPosition = GameObject.Find("SkillPosition").transform;
         // 머리통에 달려있는 히트박스 찾아오센
         SetHitBoxCollider();
     }
@@ -158,16 +163,32 @@ public class PlayerController : MonoBehaviour
     public void UseSkill1()
     {
         PlayerManager.instance.GetStateMachine().PlayAnimation("Skill1");
+        GameObject skill1 = PlayerManager.instance.GetCurrentHead().GetComponent<HeadBase>().GetSkill1();
+        InstanciateSkill(skill1);
     }
 
     public void UseSkill2()
     {
         PlayerManager.instance.GetStateMachine().PlayAnimation("Skill2");
+        GameObject skill2 = PlayerManager.instance.GetCurrentHead().GetComponent<HeadBase>().GetSkill2();
+        InstanciateSkill(skill2);
     }
 
-    public void UseSprit()
+    private void InstanciateSkill(GameObject skillPrefab)
     {
-        Debug.Log("아이템 Sprit사용");
+        GameObject instance = Instantiate(skillPrefab, skillPosition.position, Quaternion.identity);
+
+        Skill skillScript = instance.GetComponent<Skill>();
+        if (skillScript != null)
+        {
+            Vector3 dir = (transform.localScale.x > 0) ? Vector3.right : Vector3.left;
+            skillScript.SetDirection(dir);
+            skillScript.AddDamage(status.currentAttackPower);
+        }
+    }
+    public void UseSpirit()
+    {
+        Debug.Log("아이템 Spirit사용");
     }
 
     public void Switching()
@@ -245,5 +266,22 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("[PlayerController] HitBoxCollider 연결 완료: " + HitBoxCollider.name);
         }
+    }
+
+    public void TakeDamage(float inDamage)
+    {
+        status.ApplyDamage(inDamage);
+
+        float ratio = status.GetHPRatio();
+        UIManager.instance.UpdateHPBar(ratio, UIManager.instance.playerHPBar);
+        if (ratio <= 0)
+        {
+            GameManager.instance.ResetGame();
+        }
+    }
+
+    public void WarpPlayer(Transform targetPoint)
+    {
+        playerMovement.Warp(targetPoint);
     }
 }

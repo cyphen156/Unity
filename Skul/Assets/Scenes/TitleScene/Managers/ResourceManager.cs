@@ -26,7 +26,6 @@ public class ResourceManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
     // 개별 로딩 /// 씬 로드시 사용 - 그룹 로딩 연결
@@ -54,7 +53,7 @@ public class ResourceManager : MonoBehaviour
                 Debug.LogError($"[GameManager] 씬 {sceneName} 비동기 로딩 실패");
             }
 
-            PlayerManager.instance.SetStartPosition();
+            PlayerManager.instance.SetStart();
         };
     }
 

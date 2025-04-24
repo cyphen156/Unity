@@ -117,6 +117,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LoadingPannel: {fileID: 8164287422805024205}
+  BossUIPannel: {fileID: 0}
+  SystemUIPannel: {fileID: 0}
+  bossHPBar: {fileID: 0}
 --- !u!1 &5800167525379357147
 GameObject:
   m_ObjectHideFlags: 0

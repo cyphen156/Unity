@@ -14,4 +14,9 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.Translate(direction * Time.deltaTime);
     }
+
+    public void Warp(Transform targetPoint)
+    {
+        transform.position = targetPoint.position;
+    }
 }
