@@ -4,6 +4,7 @@ public class ScrollBackground : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float baseSpeed = 0.05f;
+    [SerializeField] private float verticalOffset = -5f;
 
     private Renderer[] layerRenderers = new Renderer[11];
     private float[] parallaxSpeeds = new float[11];
@@ -29,15 +30,20 @@ public class ScrollBackground : MonoBehaviour
 
     void LateUpdate()
     {
-        float distance = cameraTransform.position.x - cameraStartPos.x;
+        Vector3 delta = cameraTransform.position - cameraStartPos;
 
         for (int i = 0; i < layerRenderers.Length; i++)
         {
-            if (layerRenderers[i] == null) continue;
+            if (layerRenderers[i] == null)
+            {
+                continue;
+            }
 
-            float offsetX = distance * parallaxSpeeds[i];
-            layerRenderers[i].material.mainTextureOffset = new Vector2(offsetX, 0);
+            float offsetX = delta.x * parallaxSpeeds[i];
+            float offsetY = -delta.y * parallaxSpeeds[i];
+
+            layerRenderers[i].material.mainTextureOffset = new Vector2(offsetX, offsetY);
         }
-        transform.position = new Vector3(cameraTransform.position.x, 0, 0);
+        transform.position = new Vector3(cameraTransform.position.x, cameraTransform.position.y + verticalOffset, 0);
     }
 }

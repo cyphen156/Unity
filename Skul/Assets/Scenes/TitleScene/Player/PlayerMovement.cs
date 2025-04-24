@@ -14,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.Translate(direction * Time.deltaTime);
     }
+    public void Jump(Vector2 jumpDirection, float jumpForce)
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpDirection.y * jumpForce);
+    }
 
     public void Warp(Transform targetPoint)
     {

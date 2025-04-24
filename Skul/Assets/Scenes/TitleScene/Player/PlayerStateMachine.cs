@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 public class PlayerStateMachine : MonoBehaviour 
 {
@@ -66,8 +67,9 @@ public class PlayerStateMachine : MonoBehaviour
             return;
         }
 
-        animator.SetTrigger("Fall");
-        ChangeState(PlayerGroundState.IsFalling);
+        PlayAnimation("Fall", PlayerGroundState.IsFalling);
+        //animator.SetTrigger("Fall");
+        //ChangeState(PlayerGroundState.IsFalling);
     }
     public void PlayAnimation(string triggerName)
     {

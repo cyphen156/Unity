@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private PlayerStatus status;
 
     public float moveSpeed = 5f;
-    public float jumpForce = 15f;
+    public float jumpForce = 5f;
     private int jumpCount;
     private int dashCount;
     private int ActionLimit = 2;
@@ -25,6 +26,10 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement playerMovement;
     private LayerMask groundLayer = 1 << 9;
     private Transform skillPosition;
+    private float currentTime = 0f;
+    private float fallTime = 0.1f;
+    private LayerMask interactLayer;
+    private float interactRange = 3f;
 
     private void Awake()
     {
@@ -52,9 +57,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb.linearVelocity.y <= -0.1f)
+        currentTime += Time.deltaTime;
+        if (rb.linearVelocity.y <= -5f && currentTime > fallTime)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -3f);
+            currentTime = 0f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -5f);
+            
             PlayerManager.instance.GetStateMachine().PlayFall();
         }
     }
@@ -76,7 +84,7 @@ public class PlayerController : MonoBehaviour
         }
         currentDirection = Vector2.left;
         playerMovement.Move(currentDirection * moveSpeed);
-        transform.localScale = new Vector3(-1, 1, 1);
+        transform.localScale = new Vector3(-3, 3, 1);
         PlayerManager.instance.GetStateMachine().SetBoolState("Walk", true);
     }
 
@@ -88,7 +96,7 @@ public class PlayerController : MonoBehaviour
         }
         currentDirection = Vector2.right;
         playerMovement.Move(currentDirection * moveSpeed);
-        transform.localScale = new Vector3(1, 1, 1);
+        transform.localScale = new Vector3(3, 3, 1);
         PlayerManager.instance.GetStateMachine().SetBoolState("Walk", true);
     }
 
@@ -109,15 +117,27 @@ public class PlayerController : MonoBehaviour
             jumpCount++;
             // 4프레임이니까
             PlayerManager.instance.GetStateMachine().PlayAnimation("Jump", PlayerStateMachine.PlayerGroundState.IsFalling);
-            StartCoroutine(StartJump(jumpDirection, 4));
+
+            playerMovement.Jump(jumpDirection, jumpForce);
+
+            AudioClip audioClip = AudioClips.instance.Jump;
+
+            SoundManager.instance.PlaySFX(audioClip);
+
+            float activeColliderTime = 0.2f;
+            StartCoroutine(TemporaryDeactiveComponent(groundCollider, activeColliderTime));
+            StartCoroutine(TemporaryDeactiveComponent(HitBoxCollider, activeColliderTime));
+            //StartCoroutine(StartJump(jumpDirection, 4));
+
         }
     }
 
     IEnumerator StartJump(Vector2 jumpDirection, int repeatCount)
     {
         rb.gravityScale = 0f;
-        float activeColliderTime = 0.5f;
-        if (jumpDirection == Vector2.up)
+
+        float activeColliderTime = 0.2f;
+        if (jumpDirection != Vector2.up)
         {
             activeColliderTime *= 2;
         }
@@ -126,7 +146,7 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < repeatCount; ++i)
         {
             playerMovement.Move(jumpDirection * jumpForce);
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.05f);
         }
         rb.gravityScale = 1f;
     }
@@ -134,6 +154,10 @@ public class PlayerController : MonoBehaviour
     public void Attack()
     {
         PlayerManager.instance.GetStateMachine().PlayAttackAnimation();
+
+        AudioClip audioClip = AudioClips.instance.Attack1;
+
+        SoundManager.instance.PlaySFX(audioClip);
     }
 
     public void Dash()
@@ -144,6 +168,10 @@ public class PlayerController : MonoBehaviour
             // 4프레임이니까
             PlayerManager.instance.GetStateMachine().PlayAnimation("Dash");
             StartCoroutine(StartDash(currentDirection, 4));
+
+            AudioClip audioClip = AudioClips.instance.Dash;
+
+            SoundManager.instance.PlaySFX(audioClip);
         }
     }
 
@@ -165,6 +193,10 @@ public class PlayerController : MonoBehaviour
         PlayerManager.instance.GetStateMachine().PlayAnimation("Skill1");
         GameObject skill1 = PlayerManager.instance.GetCurrentHead().GetComponent<HeadBase>().GetSkill1();
         InstanciateSkill(skill1);
+
+        AudioClip audioClip = AudioClips.instance.DarkPaladinSkill2BGM;
+
+        SoundManager.instance.PlaySFX(audioClip);
     }
 
     public void UseSkill2()
@@ -172,6 +204,10 @@ public class PlayerController : MonoBehaviour
         PlayerManager.instance.GetStateMachine().PlayAnimation("Skill2");
         GameObject skill2 = PlayerManager.instance.GetCurrentHead().GetComponent<HeadBase>().GetSkill2();
         InstanciateSkill(skill2);
+
+        AudioClip audioClip = AudioClips.instance.DarkPaladinSkill2BGM;
+
+        SoundManager.instance.PlaySFX(audioClip);
     }
 
     private void InstanciateSkill(GameObject skillPrefab)
@@ -199,8 +235,38 @@ public class PlayerController : MonoBehaviour
 
     public void Interact()
     {
-        // 외부와 상호작용하는 키
-        Debug.Log("Interaction triggered.");
+        Vector3 offset = new Vector3(0, 0.5f, 0);
+        Vector2 origin = transform.position + offset;
+        Vector2 dir = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, dir, interactRange);
+        Debug.DrawRay(origin, dir * interactRange, Color.red, 2f);
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider == null)
+                continue;
+
+            if (hit.collider.transform.root == transform)
+                continue;
+
+            if (hit.collider.CompareTag("Item"))
+            {
+                GameObject itemRoot = hit.collider.transform.root.gameObject;
+                PlayerManager.instance.GetHead(itemRoot);
+                Destroy(itemRoot);
+                Debug.Log("아이템 상호작용 완료");
+                return;
+            }
+
+            if (hit.collider.CompareTag("WarpPoint"))
+            {
+                Transform targetPoint = GameObject.FindGameObjectWithTag("WhiteHole")?.transform;
+                WarpPlayer(targetPoint);
+                UIManager.instance.ActiveBossUI();
+                return;
+            }
+        }
     }
 
     public void ArrowDash()
@@ -235,6 +301,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetGround()
     {
+        rb.linearVelocity = new Vector2(rb.linearVelocityX, 0f);
         PlayerManager.instance.GetStateMachine().ChangeState(PlayerGroundState.IsGround);
         Debug.Log("집에 가지마 베붸");
         ReSetCount();
@@ -254,7 +321,7 @@ public class PlayerController : MonoBehaviour
             SetGround();
         }
     }
-
+    
     public void SetHitBoxCollider()
     {
         HitBoxCollider = PlayerManager.instance.GetHitBoxCollider();

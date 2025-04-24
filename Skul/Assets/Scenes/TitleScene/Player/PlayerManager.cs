@@ -36,6 +36,12 @@ public class PlayerManager : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(DelayedResetPlayer());
+    }
+
+    private IEnumerator DelayedResetPlayer()
+    {
+        yield return null; // 1프레임 대기
         ResetPlayer();
     }
 
@@ -102,6 +108,7 @@ public class PlayerManager : MonoBehaviour
         if (firstHead != null && secondHead == null)
         {
             secondHead = newHead;
+            SetHeadState(secondHead, false);
         }
         else if (firstHead != null && secondHead != null)
         {
@@ -173,6 +180,16 @@ public class PlayerManager : MonoBehaviour
 
     public void SetStart()
     {
+        // 씬 진입시 시작 스타팅 찾아오기
+        GameObject startObject = GameObject.Find("StartPosition");
+        if (startObject != null)
+        {
+            startPosition = startObject.transform.position;
+        }
+        else
+        {
+            startPosition = transform.position;
+        }
         transform.position = startPosition;
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
         UIManager.instance.ActiveUIPannel(UIManager.instance.PlayerUIPannel);

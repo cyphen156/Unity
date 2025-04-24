@@ -18,6 +18,10 @@ TagManager:
   - PlayerUIPannel
   - Monster
   - DefaultSkill1
+  - StartPosition
+  - WhiteHole
+  - WarpPoint
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -32,7 +36,7 @@ TagManager:
   - Wall
   - Skill
   - Monster
-  - 
+  - Warp
   - 
   - 
   - 

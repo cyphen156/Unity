@@ -83,4 +83,15 @@ public class SoundManager : MonoBehaviour
 
         // 필요 시 캐싱 or Release(handle);
     }
+
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            Debug.LogWarning("[SoundManager] 재생할 효과음 클립이 없습니다.");
+            return;
+        }
+
+        sfxSource.PlayOneShot(clip);
+    }
 }
